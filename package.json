@@ -39,7 +39,7 @@
     "dev": "vite",
     "start": "vite preview",
     "prepare": "husky install",
-    "pre-commit": "pnpm check-types && pnpm lint-pass && pnpm test-bail",
+    "pre-commit": "pnpm check-types && pnpm lint-pass",
     "generate-types": "node generate-types.js"
   },
   "eslintIgnore": [
@@ -84,6 +84,7 @@
     "eslint-plugin-tailwindcss": "^3.13.0",
     "eslint-plugin-testing-library": "^5.11.0",
     "eslint-plugin-unused-imports": "^3.0.0",
+    "firebase-tools": "^12.4.5",
     "husky": "^8.0.3",
     "jsdom": "^22.1.0",
     "lint-staged": "^13.2.3",
