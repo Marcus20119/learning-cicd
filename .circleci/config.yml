@@ -51,6 +51,9 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - run:
+          name: Build
+          command: pnpm build
+      - run:
           name: Deploy to Firebase Hosting
           command: ./node_modules/.bin/firebase deploy --project "$FIREBASE_PROJECT_ID" --token "$FIREBASE_DEPLOY_TOKEN" --only hosting
 
