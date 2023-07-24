@@ -1,8 +1,7 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@5.1.0
-  aws-cli: circleci/aws-cli@3.1.5
+  node: circleci/node@4.2.1
 
 commands:
   install_node_modules:
@@ -36,6 +35,9 @@ jobs:
       - checkout
       - install_node_modules
       - run:
+          name: Build
+          command: pnpm build
+      - run:
           name: Lint and Test
           command: pnpm run pre-commit
 
@@ -46,36 +48,23 @@ jobs:
     steps:
       - checkout
       - install_node_modules
-      - aws-cli/setup
+      - attach_workspace:
+          at: /tmp/workspace
       - run:
-          name: 'Install aws-amplify CLI'
-          command: |
-            sudo npm install -g @aws-amplify/cli --unsafe-perm=true
-      - run:
-          name: 'Show AWS CLI and Amplify Versions'
-          command: |
-            aws --version
-            amplify --version
-      - run:
-          name: Checkout Amplify
-          command: |
-            amplify init --amplify "{\"envName\":\"$VITE_NODE_ENV\"}" --providers "{\"awscloudformation\":{\"useProfile\":true,\"profileName\":\"default\"}}" --yes
-      - run:
-          name: Deploy
-          command: |
-            amplify publish --invalidateCloudFront --codegen "{\"generateCode\":false}" --yes
+          name: Deploy to Firebase Hosting
+          command: ./node_modules/.bin/firebase deploy --project "$FIREBASE_PROJECT_ID" --token "$FIREBASE_DEPLOY_TOKEN" --only hosting
 
 workflows:
-  build-and-deploy-staging:
+  build-and-deploy-main:
     jobs:
       - build:
           filters:
             branches:
-              only: staging
+              only: main
       - deploy:
           requires:
             - build
           filters:
             branches:
-              only: staging
-          context: flight-logic-staging
+              only: main
+          context: learning-cicd-main
