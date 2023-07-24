@@ -2,7 +2,6 @@
 /// <reference types="vite/client" />
 import react from '@vitejs/plugin-react';
 import { loadEnv } from 'vite';
-import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 function htmlPlugin(env: Record<string, string | undefined>) {
@@ -34,7 +33,7 @@ export default ({ mode }) => {
     optimizeDeps: {
       include: ['@ant-design/icons', 'lodash-es'],
     },
-    plugins: [svgr(), react(), htmlPlugin(env), tsconfigPaths()],
+    plugins: [react(), htmlPlugin(env), tsconfigPaths()],
     resolve: {
       alias: [],
     },
